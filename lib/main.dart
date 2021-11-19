@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'AppShip/LoginScreen.dart';
+import 'AppShip/MainPage.dart';
 import 'MyWidget.dart';
 void main() {
   runApp(const MyApp());
@@ -31,6 +32,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: LoginScreen(),
+      // home: MainPage(),
     );
   }
 }

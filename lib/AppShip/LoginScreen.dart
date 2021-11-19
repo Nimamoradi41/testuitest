@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testuitest/AppShip/MainPage.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -10,20 +11,10 @@ class LoginScreen extends StatelessWidget {
          body: Container(
            height: double.infinity,
            width: double.infinity,
-           margin: EdgeInsets.all(16),
+           margin: EdgeInsets.all(8),
            decoration: BoxDecoration(
-               color: Color(0xff1A2325),
-               gradient: LinearGradient(
-                 begin: Alignment.topLeft,
-                 end: Alignment.bottomRight,
-                   colors: [
-                     Color(0xff1A2325)
-                     , Color(0xff434A4B)],
+               color: Color(0xff091119),
 
-
-
-
-               ),
              borderRadius: BorderRadius.circular(16)
            ),
            child: SingleChildScrollView(
@@ -31,11 +22,10 @@ class LoginScreen extends StatelessWidget {
                children: [
                  Padding(
                    padding: const EdgeInsets.only(top: 48.0),
-                   child: Icon(Icons.person,color:
-                   Colors.white,size: 220,),
+                   child:  Image.asset('assets/png/logo.png',width: 220,height: 220,),
                  ),
                  Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                   padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 8),
                    child: Container(
                      decoration: BoxDecoration(
                        borderRadius: BorderRadius.circular(16),
@@ -55,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                    ),
                  ),
                  Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                   padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 8),
                    child: Container(
                      decoration: BoxDecoration(
                        borderRadius: BorderRadius.circular(16),
@@ -75,28 +65,50 @@ class LoginScreen extends StatelessWidget {
                    ),
                  ),
 
-                 Container(
-                   width: double.infinity,
-                   height: 65,
-                   margin: EdgeInsets.symmetric(horizontal: 64,vertical: 32),
-                   decoration: BoxDecoration(
-                     color: Colors.amber,
-                       boxShadow: [
-                         BoxShadow(
-                           color: Colors.amber.withOpacity(0.5),
-                           spreadRadius: 3,
-                           blurRadius: 4,
-                           offset: Offset(0, 0), // changes position of shadow
-                         ),
-                       ],
-                     borderRadius: BorderRadius.circular(16)
+                 GestureDetector(
+                   onTap: (){
+                     Navigator.pushAndRemoveUntil(
+                       context,
+                       MaterialPageRoute(builder: (context) => MainPage()),
+                           (Route<dynamic> route) => false,
+                     );
+                   },
+                   child: Container(
+                     width: double.infinity,
+                     height: 65,
+                     margin: EdgeInsets.symmetric(horizontal: 64,vertical: 32),
+                     decoration: BoxDecoration(
+                       color: Color(0xffF7FF00),
+                         boxShadow: [
+                           BoxShadow(
+                             color: Color(0xffF7FF00).withOpacity(0.35),
+                             spreadRadius: 3,
+                             blurRadius: 4,
+                             offset: Offset(0, 0), // changes position of shadow
+                           ),
+                         ],
+                       borderRadius: BorderRadius.circular(16)
+                     ),
+                     child: Center(child: Text('ورود',style: TextStyle(
+                       color: Colors.black,
+                       fontWeight: FontWeight.bold,
+                       fontSize: 18
+                     ),)),
                    ),
-                   child: Center(child: Text('ورود',style: TextStyle(
-                     color: Colors.white,
-                     fontWeight: FontWeight.bold,
-                     fontSize: 18
-                   ),)),
                  ),
+                 Text('? فراموشی رمز عبور',style: TextStyle(
+                   color: Color(0xffF7FF00),
+                   fontSize: 16,
+                   fontWeight: FontWeight.bold
+                 ),),
+                 Padding(
+                   padding: const EdgeInsets.all(16.0),
+                   child: Text('ورود افلاین',style: TextStyle(
+                       color: Color(0xffF7FF00),
+                       fontSize: 16,
+                       fontWeight: FontWeight.bold
+                   ),),
+                 )
 
                ],
              ),
