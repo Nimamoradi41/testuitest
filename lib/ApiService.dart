@@ -12,6 +12,7 @@ import 'package:testuitest/AppShip/Trucks.dart';
 
 import 'AppShip/DataBseFile.dart';
 import 'AppShip/MainPage.dart';
+import 'AppShip/enter_Service.dart';
 import 'modeldatalogin.dart';
 import 'package:http/http.dart'as http;
 
@@ -33,23 +34,6 @@ class ApiService{
   }
   static Future Login(String userName,String password,BuildContext context2,ProgressDialog pr) async{
     Modeldatalogin? login=null;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     if(!pr.isShowing())
     {
@@ -267,7 +251,7 @@ class ApiService{
   }
 
 
-  static Future<bool> Add_Tasck(ProgressDialog pr,String truckId,String enterDate,String exitDate) async{
+  static Future<bool> Add_Tasck(ProgressDialog pr,String truckId,String enterDate,String exitDate,Trucks s) async{
     Modeldatalogin? login=null;
 
 
@@ -305,95 +289,63 @@ class ApiService{
     }
 
 
-    print(token);
-    print(id);
-    var map = new Map<String, dynamic>();
-    map['body'] = jsonEncode({
-      "truckId":truckId,
-      "seoId":id,
-      "enterDate":enterDate,
-      "exitDate":exitDate,}) ;
-    print(map.toString());
-    final url = Uri.parse('http://31.7.67.183:2020/Api/Barshomar/TruckEnterFunnel');
-    // print(url.toString());
-    // final url = Uri.parse('http://91.108.148.38:33221/CRM'+'/'+'Api/Atiran/login/login');
-    print(url.toString());
-    try{
-      Response response = await http.post(url,
-          body:map,
-          headers: {
-            'Authorization': 'Bearer $token',
-          }
-      ).timeout(
-        Duration(seconds: 15),
-        onTimeout: () {
-          pr.hide();
-          Finall=false;
 
-          return   ShowSnackbar('مشکلی در ارتباط با سرور به وجود آمده است');
-        },
-      ).catchError((error) {
-        pr.hide();
-        Finall=false;
-        print('eRROR IS'+error.toString());
-        // return   ShowSnackbar(error.toString());
-        // throw("some arbitrary error");
-      }) ;
 
-      print('Resi'+response.toString());
-      if(response.statusCode==200)
-      {
-        print('Its Ok Request Nima');
-        String data=response.body;
-        var body=json.decode(data);
-        var data1=body['data'];
-        if(data1!=null)
-        {
-          bool isSuccess=data1['isSuccess'];
-          print('111');
+    var headers = {
+      'Authorization': 'Bearer '+token!
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('http://31.7.67.183:2020/api/Barshomar/TruckEnterAndExitFunnel'));
+    // request.fields.addAll({
+    //   'body': '{\n  "truckId": $truckId,\n  "seoId": $id,\n  "enterDate" : $enterDate,\n  "exitDate" : $exitDate \n\n}'
+    // });
+    request.fields.addAll({
+      'body': '{\n  "truckId": "$truckId",'
+          '\n  "seoId": "$id",\n'
+          '  "enterDate" : "$enterDate",\n'
+          '  "exitDate" : "$exitDate"\n\n}'
+    });
 
-          if(isSuccess)
-            {
-              Finall=true;
-            }
+    request.headers.addAll(headers);
 
-        }else{
-          Finall=false;
-          pr.hide();
-          ShowSnackbar('مشکلی در ارتباط با سرور به وجود آمده');
-        }
-        print(body);
-        // Modeldatalogin DATA=modeldataloginFromJson(data);
-        // print(DATA.toJson());
-        // login=DATA;
-        // if(DATA.isSuccess==true)
+    http.StreamedResponse response = await request.send();
 
-      }else{
-        Finall=false;
-        pr.hide();
-        ShowSnackbar('مشکلی در ارتباط با سرور به وجود آمده');
-        print(response.statusCode.toString());
-
-      }
-    } on SocketException catch (e)
+    if (response.statusCode == 200)
     {
-      Finall=false;
-      print('I am Here'+e.toString());
-      pr.hide();
-      login= null;
-    }
-    on TimeoutException catch (e) {
-      Finall=false;
-      pr.hide();
-      print('Error issssssssswwwwww: $e');
+      print('200');
+      var data=await response.stream.bytesToString();
+      var body=json.decode(data);
+      bool isSuccess=body['isSuccess'];
+      if(isSuccess)
+        {
 
-    } on Error catch (e) {
+          ShowSnackbar('سرویس با موفقیت به سرور ارسال شد');
+          Finall=true;
+        }
+
+
+
+    }
+    else if(response.statusCode == 500){
+         Finall=false;
+          print('500');
+          String data= await response.stream.bytesToString();
+          var body=json.decode(data);
+         ShowSnackbar(body['Message']);
+    }
+    else if(response.statusCode == 401){
       Finall=false;
-      pr.hide();
-      print('Error isssssssss: $e');
+      print('401');
+      ShowSnackbar('دوباره لاگین کنید');
+    }
+    else {
+      print(response.reasonPhrase);
     }
 
-    // pr.hide();
+
+     var dad= await DataBseFile.db.newService(s);
+    print('Daata Is'+dad.toString());
+    pr.hide();
+
     return Finall;
   }
 

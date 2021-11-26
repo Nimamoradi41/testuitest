@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:testuitest/AppShip/MainPage.dart';
 
 import '../ApiService.dart';
+import '../modeldatalogin.dart';
 import 'Trucks.dart';
 
 class DataBseFile {
@@ -38,7 +39,6 @@ class DataBseFile {
 
 
    newTrucks(Trucks s)async{
-
      final db=await database;
         var res=await db!.rawInsert('''
         INSERT INTO Trucks (
@@ -49,10 +49,35 @@ class DataBseFile {
         return res;
    }
 
+
+
+  newService(Trucks s)async{
+    final db=await database;
+    var res=await db!.rawInsert('''
+        INSERT INTO Services (
+        truckNumberId, truckName, qrcode, plateNumber, telephone, id    
+        ) VALUES (?, ?, ?, ?, ?, ?)
+        ''',[s.truckNumberId, s.truckName, s.qrcode, s.plateNumber, s.telephone, s.id]);
+    print(res.toString());
+    return res;
+  }
+
+
+
   Init({String dbname:'appdatabase.db'})  async {
     return await openDatabase(join(await getDatabasesPath(),dbname),onCreate:( Database  db, int version)async{
       await db.execute('''
               CREATE TABLE Trucks (
+              truckNumberId text,
+              truckName text not null,
+              qrcode text not null,
+              plateNumber text not null,
+              telephone text not null,
+              id text not null)
+                           ''');
+      await db.execute('''
+              CREATE TABLE Services (
+              id_database INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
               truckNumberId text,
               truckName text not null,
               qrcode text not null,
@@ -117,6 +142,23 @@ class DataBseFile {
 
 
     print('fINISHEED');
+
+
+  }
+
+
+
+  Future Save_Service(Trucks trucks) async
+  {
+
+
+
+
+
+    var  ss=await  db.newService(trucks);
+
+
+    print(ss.toString());
 
 
   }

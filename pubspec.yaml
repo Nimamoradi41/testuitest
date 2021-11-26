@@ -71,6 +71,8 @@ flutter:
     - assets/png/pelac.png
     - assets/png/shipp.png
     - assets/png/ssdd.svg
+    - assets/png/i_user.svg
+    - assets/png/i_truck.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

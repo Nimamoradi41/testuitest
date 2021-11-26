@@ -9,7 +9,6 @@ import 'MyWidget.dart';
 void main() {
   runApp( MyApp());
 }
-
 class MyApp extends StatefulWidget {
 
 
@@ -18,14 +17,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
        debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'iranyekanbold',
-
         primarySwatch: Colors.blue,
       ),
       home: LoginScreen(),
